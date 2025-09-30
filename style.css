@@ -1,0 +1,140 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f5f1e5;
+}
+
+#startseite {
+  position: relative;
+}
+
+#sprung {
+  width: 100%;
+  height: 100vh;
+  object-fit: cover;
+}
+
+#titel {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #f5f1e5;
+  font-family: "Noto Sans", sans-serif;
+  font-size: 5vw;
+}
+
+#untertitel {
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #f5f1e5;
+  font-family: "Noto Sans", sans-serif;
+  font-size: 2vw;
+}
+
+#schwimmsack01 {
+  position: absolute;
+  top: 48%;
+  left: 15%;
+  transform: translate(-50%, -50%);
+  width: 13vw;
+  transform: rotate(-20deg);
+}
+
+#schwimmsack02 {
+  position: absolute;
+  top: 65%;
+  left: 35%;
+  transform: translate(-50%, -50%);
+  width: 13vw;
+  transform: rotate(20deg);
+}
+
+#schwimmsack03 {
+  position: absolute;
+  top: 35%;
+  left: 45%;
+  transform: translate(-50%, -50%);
+  width: 13vw;
+  transform: rotate(-14deg);
+}
+
+#schwimmsack04 {
+  position: absolute;
+  top: 70%;
+  left: 65%;
+  transform: translate(-50%, -50%);
+  width: 13vw;
+  transform: rotate(-20deg);
+}
+
+#schwimmsack05 {
+  position: absolute;
+  top: 40%;
+  left: 75%;
+  transform: translate(-50%, -50%);
+  width: 13vw;
+  transform: rotate(20deg);
+}
+
+#aktuelleDaten {
+  display: flex;
+  gap: 3%;
+  padding: 8% 5%;
+  justify-content: center;
+}
+
+.kreis {
+  width: 25vw;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: #c02a2a;
+  color: #f5f1e5;
+  font-family: "Noto Sans", sans-serif;
+  text-align: center;
+  font-size: 4vw;
+  font-weight: 600;
+}
+
+.aktuelleWerte {
+  display: block;
+}
+
+.aktuelleWerte h3 {
+  text-align: center;
+  font-family: "Noto Sans", sans-serif;
+  padding-top: 5%;
+  font-size: 1.5vw;
+  font-weight: 800;
+}
+
+#wassermengeUmwandlung {
+  background: #c02a2a;
+  display: block;
+  text-align: center;
+  font-family: "Noto Sans", sans-serif;
+  padding: 5% 0%;
+}
+
+#wassermengeUmwandlung h1 {
+  font-size: 7vw;
+  font-weight: 500;
+}
+
+#wassermengeUmwandlung h3 {
+  font-size: 2vw;
+  font-weight: 700;
+}
+
+#badewanne {
+  width: 50%;
+}
