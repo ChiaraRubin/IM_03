@@ -27,7 +27,7 @@ try {
 $pdo = new PDO($dsn, $username, $password, $options);
 
 // SQL-Query mit Platzhaltern für das Einfügen von Daten
-    $sql = "INSERT INTO `Aare Daten` 
+    $sql = "INSERT INTO `Aare_Daten` 
         (`Lufttemperatur`, `Wassertemperatur`, `Wassermenge`, `Zeit`) 
         VALUES (:Lufttemperatur, :Wassertemperatur, :Wassermenge, :Zeit)";
 

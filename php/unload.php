@@ -14,6 +14,23 @@
    ============================================================================ */
 
 
-require_once '../config.php'; // Stellen Sie sicher, dass dies auf Ihre tatsächliche Konfigurationsdatei verweist
+require_once 'config.php'; // Stellen Sie sicher, dass dies auf Ihre tatsächliche Konfigurationsdatei verweist
+header('Content-Type: application/json;charset=utf-8');
+$sqls = ["",""];
 
-header('Content-Type: application/json');
+try { // dsn = Wohin musst du und wie heisst die Datenbank?
+   $pdo = new PDO($dsn, $username, $password, $options);
+   $sql = "SELECT * FROM `Aare_Daten`";
+   // Heutiges Datum Test $sql = "SELECT * FROM `Aare Daten` WHERE DATE(`Zeit`) = '2025-10-07'";
+
+   $stmt = $pdo->prepare($sql);
+   $stmt-> execute();
+
+   $data = $stmt -> fetchAll();
+
+   echo json_encode($data); 
+} catch (PDOException $e) {
+   echo json_encode (['error' => $e->getMessage()]);
+}
+
+

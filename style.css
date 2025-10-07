@@ -4,8 +4,14 @@
   box-sizing: border-box;
 }
 
+:root {
+  --beige: #f5f1e5;
+  --rot: #c02a2a;
+  --schwarz: #000000;
+}
+
 body {
-  background-color: #f5f1e5;
+  background-color: var(--beige);
 }
 
 #startseite {
@@ -23,7 +29,7 @@ body {
   top: 15%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: #f5f1e5;
+  color: var(--beige);
   font-family: "Noto Sans", sans-serif;
   font-size: 5vw;
 }
@@ -33,7 +39,7 @@ body {
   top: 25%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: #f5f1e5;
+  color: var(--beige);
   font-family: "Noto Sans", sans-serif;
   font-size: 2vw;
 }
@@ -42,52 +48,40 @@ body {
   position: absolute;
   top: 48%;
   left: 15%;
-  transform: translate(-50%, -50%);
   width: 13vw;
-  transform: rotate(-20deg);
+  transform: translate(-50%, -50%) rotate(-20deg);
 }
 
 #schwimmsack02 {
   position: absolute;
   top: 65%;
   left: 35%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) rotate(20deg);
   width: 13vw;
-  transform: rotate(20deg);
 }
 
 #schwimmsack03 {
   position: absolute;
   top: 35%;
   left: 45%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) rotate(-14deg);
   width: 13vw;
-  transform: rotate(-14deg);
 }
 
 #schwimmsack04 {
   position: absolute;
   top: 70%;
   left: 65%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) rotate(-20deg);
   width: 13vw;
-  transform: rotate(-20deg);
 }
 
 #schwimmsack05 {
   position: absolute;
   top: 40%;
   left: 75%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) rotate(20deg);
   width: 13vw;
-  transform: rotate(20deg);
-}
-
-#aktuelleDaten {
-  display: flex;
-  gap: 3%;
-  padding: 8% 5%;
-  justify-content: center;
 }
 
 .kreis {
@@ -97,28 +91,41 @@ body {
   display: grid;
   place-items: center;
   padding: 1rem;
-  background: #c02a2a;
-  color: #f5f1e5;
+  background: var(--rot);
+  color: var(--beige);
   font-family: "Noto Sans", sans-serif;
-  text-align: center;
   font-size: 4vw;
   font-weight: 600;
 }
 
 .aktuelleWerte {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .aktuelleWerte h3 {
   text-align: center;
   font-family: "Noto Sans", sans-serif;
   padding-top: 5%;
-  font-size: 1.5vw;
-  font-weight: 800;
+  font-size: 2vw;
+  font-weight: 700;
+}
+
+#wassermengeUmwandlung h3 {
+  font-size: 2vw;
+}
+
+#aktuelleDaten {
+  display: flex;
+  gap: 3%;
+  padding: 8% 5%;
+  justify-content: center;
 }
 
 #wassermengeUmwandlung {
-  background: #c02a2a;
+  background: var(--rot);
   display: block;
   text-align: center;
   font-family: "Noto Sans", sans-serif;
@@ -126,13 +133,8 @@ body {
 }
 
 #wassermengeUmwandlung h1 {
-  font-size: 7vw;
-  font-weight: 500;
-}
-
-#wassermengeUmwandlung h3 {
-  font-size: 2vw;
-  font-weight: 700;
+  font-size: 10vw;
+  font-weight: 600;
 }
 
 #badewanne {
@@ -140,9 +142,7 @@ body {
 }
 
 #fisch {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: block;
   text-align: center;
   padding: 5%;
   font-family: "Noto Sans", sans-serif;
@@ -150,33 +150,235 @@ body {
 
 #fisch div {
   position: relative;
-  width: 25vw;
-  height: 25vw;
 }
 
-#fisch h3,
-h1 {
+#fisch h1 {
+  font-size: 5vw;
+}
+
+#fisch h3 {
   padding: 1%;
+  font-size: 2vw;
 }
 
 #kreisFisch {
   position: absolute;
   top: 50%;
-  left: 50%;
   width: 25vw;
   aspect-ratio: 1 / 1;
-  background-color: #c02a2a;
+  background-color: var(--rot);
   border-radius: 50%;
-  transform: translate(-50%, -50%);
   z-index: 1;
 }
 
-#bachforelle {
+#fischAktuell {
   position: absolute;
-  top: 0%;
-  left: -30%;
+  top: 50%;
+  left: -110%;
   width: 40vw;
-  transform: translate(50%, -60%);
   z-index: 2;
   transform: scaleX(-1);
+  animation: wiggle 2s ease-in-out infinite;
+  transform-origin: center center;
+}
+
+@keyframes wiggle {
+  0%,
+  100% {
+    transform: translate(50%, -60%) scaleX(-1) rotate(0deg);
+  }
+  25% {
+    transform: translate(50%, -60%) scaleX(-1) rotate(3deg);
+  }
+  75% {
+    transform: translate(50%, -60%) scaleX(-1) rotate(-3deg);
+  }
+}
+
+#fischBild {
+  display: block;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  text-align: center;
+}
+
+#fischBild p {
+  font-size: 1.2em;
+  margin-top: 20%;
+}
+
+#fischBild::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 45%;
+  width: 2px;
+  height: 2.2rem;
+  background: var(--schwarz);
+  z-index: 2;
+  margin-top: 50%;
+}
+
+.fischbox {
+  display: flex;
+  gap: 15%;
+  align-items: center;
+  padding: 5%;
+}
+
+#fischText {
+  text-align: left;
+  font-size: 1.2em;
+}
+
+@media only screen and (max-width: 1800px) {
+  #sprung {
+    height: 100%;
+  }
+}
+
+@media only screen and (max-width: 1450px) {
+  #fischBild p {
+    margin-top: 25%;
+  }
+
+  #fischAktuell {
+    top: 45%;
+    left: -115%;
+  }
+}
+
+@media only screen and (max-width: 1100px) {
+  #fischBild p,
+  #fischText {
+    font-size: 1em;
+  }
+
+  #fischBild p {
+    margin-top: 20%;
+  }
+
+  #fischBild::after {
+    top: 42%;
+  }
+}
+
+@media only screen and (max-width: 1065px) {
+  #fischBild::after {
+    height: 1.8rem;
+  }
+}
+
+@media only screen and (max-width: 910px) {
+  #titel {
+    font-size: 6vw;
+  }
+  #untertitel,
+  #fisch h3 {
+    font-size: 3vw;
+  }
+
+  #fischBild::after {
+    height: 1.5rem;
+  }
+}
+
+@media only screen and (max-width: 710px) {
+  #fischBild p,
+  #fischText {
+    font-size: 0.8em;
+  }
+
+  .aktuelleWerte h3,
+  #wassermengeUmwandlung h3 {
+    font-size: 0.8em;
+    margin: 5%;
+  }
+}
+
+@media only screen and (max-width: 650px) {
+  #fischBild::after {
+    height: 1.3rem;
+  }
+}
+
+@media only screen and (max-width: 560px) {
+  #untertitel,
+  #fisch h3 {
+    font-size: 3.1vw;
+  }
+
+  #schwimmsack03 {
+    top: 45%;
+    left: 45%;
+  }
+
+  #schwimmsack05 {
+    top: 50%;
+    left: 75%;
+  }
+
+  .fischbox {
+    display: block;
+  }
+
+  @keyframes wiggle {
+    0%,
+    100% {
+      transform: translate(0%, 0%) scaleX(-1) rotate(0deg);
+    }
+    25% {
+      transform: translate(0%, 0%) scaleX(-1) rotate(3deg);
+    }
+    75% {
+      transform: translate(0%, 0%) scaleX(-1) rotate(-3deg);
+    }
+  }
+
+  #fischBild {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #fischBild::after {
+    height: 1.5rem;
+    margin-top: 13%;
+  }
+
+  #fischBild p {
+    margin-top: 12%;
+    margin-bottom: 5%;
+  }
+
+  #fischAktuell {
+    left: 25%;
+    top: 0%;
+  }
+
+  #aktuelleDaten {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+  }
+}
+
+@media only screen and (max-width: 420px) {
+  #fisch {
+    margin: 5% 0%;
+  }
+
+  #fischBild p {
+    margin-top: 16%;
+  }
+
+  #fischBild::after {
+    height: 1.3rem;
+    margin-top: 11%;
+  }
 }
