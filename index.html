@@ -10,6 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
       rel="stylesheet"
     />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>Aare you safe?</title>
   </head>
   <body>
@@ -94,7 +95,15 @@
           </p>
         </div>
       </section>
+      <section id="luftUndWasserChart">
+        <h1>Luft und Wassertemperatur</h1>
+        <canvas id="areaChart"></canvas>
+      </section>
+      <section id="wasserMenge">
+        <h1>Wassermängi</h1>
+        <canvas id="balken"></canvas>
+      </section>
     </main>
-    <script src="script.js"></script>
+    <script src="script.js" type="module"></script>
   </body>
 </html>

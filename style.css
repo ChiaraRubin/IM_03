@@ -141,7 +141,9 @@ body {
   width: 50%;
 }
 
-#fisch {
+#fisch,
+#luftUndWasserChart,
+#wasserMenge {
   display: block;
   text-align: center;
   padding: 5%;
@@ -152,7 +154,9 @@ body {
   position: relative;
 }
 
-#fisch h1 {
+#fisch h1,
+#luftUndWasserChart h1,
+#wasserMenge h1 {
   font-size: 5vw;
 }
 
