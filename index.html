@@ -68,7 +68,7 @@
       </section>
       <section id="wassermengeUmwandlung">
         <img src="src/Badewanne.png" alt="Badewanne" id="badewanne" />
-        <h1>1000</h1>
+        <h1 id="anzahlBadewannen">1000</h1>
         <h3>So viu Badwannä fliessä i eirä Sekundä dürä</h3>
       </section>
       <section id="fisch">
@@ -82,7 +82,7 @@
               alt="Bachforelle"
               id="fischAktuell"
             />
-            <p>D'Bachforelle</p>
+            <p id="aktuellerFisch"></p>
           </div>
           <p id="fischText">
             D’Bachforelle isch en Süesswasserfisch us de Familie vo de Lachs.
@@ -96,7 +96,14 @@
         </div>
       </section>
       <section id="luftUndWasserChart">
-        <h1>Luft und Wassertemperatur</h1>
+        <h1>Luft- und Wassertemperatur</h1>
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css"
+        />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
+
+        <input type="text" id="dateRange" placeholder="Wähle einen Zeitraum" />
         <canvas id="areaChart"></canvas>
       </section>
       <section id="wasserMenge">

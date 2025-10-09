@@ -19,17 +19,16 @@ let allData = await loadData();
 
 // Aktuelle Wassertemperatur in eine Variable speichern und in den entsprechenden Kreis tun
 let aktuelleWassertemperatur = allData[allData.length - 1].Wassertemperatur;
-
 let aktuelleWassertemperaturWert = document.querySelector(
   "#aktuelleWassertemperatur"
 );
-aktuelleWassertemperaturWert.innerHTML = aktuelleWassertemperatur;
+aktuelleWassertemperaturWert.innerHTML = aktuelleWassertemperatur + " °C";
 
 // Aktuelle Wassermenge in eine Variable speichern und in den entsprechenden Kreis tun
 
 let aktuelleWassermenge = allData[allData.length - 1].Wassermenge;
 let aktuelleWasserMengeWert = document.querySelector("#aktuelleWasserMenge");
-aktuelleWasserMengeWert.innerHTML = `${aktuelleWassermenge}m <sup>3</sup>/s`;
+aktuelleWasserMengeWert.innerHTML = `${aktuelleWassermenge} m³/s`;
 
 // Aktuelle Lufttemperatur in eine Variable speichern und in den entsprechenden Kreis tun
 
@@ -37,18 +36,94 @@ let aktuelleLufttemperatur = allData[allData.length - 1].Lufttemperatur;
 let aktuelleLufttemperaturWert = document.querySelector(
   "#aktuelleLufttemperatur"
 );
-aktuelleLufttemperaturWert.innerHTML = aktuelleLufttemperatur;
+aktuelleLufttemperaturWert.innerHTML = aktuelleLufttemperatur + " °C";
 
 // Fische entsprechend der Wassertemperatur austauschen
-if (aktuelleWassertemperatur < 8 && aktuelleWassertemperatur > 4) {
-  let hecht = document.querySelector("#fischAktuell");
+let aktuellerFisch = document.querySelector("#fischAktuell");
+let aktuellerFischText = document.querySelector("#fischText");
+let aktuellerFischTitel = document.querySelector("#aktuellerFisch");
+let schwimmsack01 = document.querySelector("#schwimmsack01");
+let schwimmsack02 = document.querySelector("#schwimmsack02");
+let schwimmsack03 = document.querySelector("#schwimmsack03");
+let schwimmsack04 = document.querySelector("#schwimmsack04");
+let schwimmsack05 = document.querySelector("#schwimmsack05");
 
-  hecht.src = "src/Hecht.png";
-  hecht.alt = "Hecht";
+if (aktuelleWassertemperatur <= 4) {
+  aktuellerFisch.src = "src/Handschuhe.png";
+  aktuellerFisch.alt = "Handschuhe";
+  aktuellerFischText.innerHTML =
+    "Brr, es isch z'chalt zum go Fische gah! Aber vielicht isch en Spaziergang ade Aare entlang ganz schön!";
+  aktuellerFischTitel.innerHTML = "Ned z'vergesse!";
+  // Anzahl Schwimmtaschen auf der Startseite anpassen (kalte Temperaturen = wenig Schwimmtaschen; warme Temperaturen = viele Schwimmtaschen)
+  schwimmsack01.classList.add("unsichtbar");
+  schwimmsack02.classList.add("unsichtbar");
+  schwimmsack03.classList.add("unsichtbar");
+  schwimmsack04.classList.add("unsichtbar");
+  schwimmsack05.classList.add("unsichtbar");
+} else if (aktuelleWassertemperatur > 4 && aktuelleWassertemperatur < 8) {
+  aktuellerFisch.src = "src/Hecht.png";
+  aktuellerFisch.alt = "Hecht";
+  aktuellerFischText.innerHTML =
+    "Dr Hecht isch en Raubfisch us de Familie vo de Hechtartige. Er lebt vor allem i See, Teiche und langsam fliessendi Flüsse mit viu Wasserpflanze. Charakteristisch sind sini länglichi Körperform, de spitzige Chopf und sini scharfe Zähn. D’Färbig isch grünlich mit helli Flecke, wo em gueti Tarnig gäge Wasserpflanze git. Dr Hecht isch e sehr gfrässige Räuber und frisst Fisch, Frösche und Wasserinsekte. Als Spitzenräuber spielt er e wichtigi Roll für s’Gleichgwich im Gewässer.";
+  aktuellerFischTitel.innerHTML = "Dr Hecht";
+  // Anzahl Schwimmtaschen auf der Startseite anpassen (kalte Temperaturen = wenig Schwimmtaschen; warme Temperaturen = viele Schwimmtaschen)
+  schwimmsack02.classList.add("unsichtbar");
+  schwimmsack03.classList.add("unsichtbar");
+  schwimmsack04.classList.add("unsichtbar");
+  schwimmsack05.classList.add("unsichtbar");
+} else if (aktuelleWassertemperatur >= 8 && aktuelleWassertemperatur < 14) {
+  aktuellerFisch.src = "src/Bachforelle.png";
+  aktuellerFisch.alt = "Bachforelle";
+  aktuellerFischText.innerHTML =
+    " D’Bachforelle isch en Süesswasserfisch us de Familie vo de Lachs. Sie lebt bevorzugt i klare, chüele und surstoffriche Bäch und Flüss mit steinigem Grund. Charakteristisch sind ihri goldbruni Färbig und die rote Punkt, wo oft vo helle Ring umgebe sind. Als standorttreuer Räuber ernährt sie sich vo Insekte, Larve und chlinere Fisch. Ökologisch gilt sie als Zeigerart: Gahts de Bachforelle guet, gahts em Gewässer meistens au guet.";
+  aktuellerFischTitel.innerHTML = "D'Bachforelle";
+  // Anzahl Schwimmtaschen auf der Startseite anpassen (kalte Temperaturen = wenig Schwimmtaschen; warme Temperaturen = viele Schwimmtaschen)
+  schwimmsack02.classList.add("unsichtbar");
+  schwimmsack03.classList.add("unsichtbar");
+  schwimmsack05.classList.add("unsichtbar");
+} else if (aktuelleWassertemperatur >= 14 && aktuelleWassertemperatur < 16) {
+  aktuellerFisch.src = "src/Aesche.png";
+  aktuellerFisch.alt = "Aesche";
+  aktuellerFischText.innerHTML =
+    "D’Äsche ghört wie d’Bachforelle zur Familie vo de Lachsartige. Sie liebt klari, kühle Flüsse mit kältigem Wasser und kiesigem Grund. Ihr Erkennigszeiche isch d’langi, farbig schillerendi Rückenflosse, wo wie e Segel uufragt. D’Färbig isch silbrig mit violette und blaugrüene Schimmer. D’Äsche ernährt sich vor allem vo Insekte und Larve, wo si us em Wasser pickt. Als Zeigerart gilt sie als empfindlich – drum isch ihr Vorchunft es sichers Zeichä für gueti Wasserqualität.";
+  aktuellerFischTitel.innerHTML = "D’Äsche";
+  // Anzahl Schwimmtaschen auf der Startseite anpassen (kalte Temperaturen = wenig Schwimmtaschen; warme Temperaturen = viele Schwimmtaschen)
+
+  schwimmsack01.classList.add("unsichtbar");
+  schwimmsack03.classList.add("unsichtbar");
 } else {
-  hecht.src = "src/Hecht.png";
+  aktuellerFisch.src = "src/Egli.png";
+  aktuellerFisch.alt = "Egli";
+  aktuellerFischText.innerHTML =
+    "D’Egli isch en Süesswasserfisch us de Familie vo de Barschartige. Sie lebt gärn i klare und mässig warme See und Flüsse. Charakteristisch sind ihrä silbrig-glänzendi Schuppe mit de dunkelgrüne Streife längs am Körper und de rotä Flosse. D’Egli bildet oft Schwärme und isch drum e wichtige Art im Mittelandsee. Ernährt wird sie sich vo Insekte, Würmer und chlinere Fische. Ökologisch gseh isch sie bedeutend für s’Gleichgwich i de Gewässer, will sie viu als Futterfisch dient.";
+  aktuellerFischTitel.innerHTML = "D’Egli";
 }
 
+// Aktuelle Wassermenge in Anzahl Badewannen umrechnen und anschliessend mit .toFixed(2) auf zwei Kommastellen runden
+let anzahlBadewannenWert = (aktuelleWassermenge * 1000) / 150;
+let anzahlBadewannen = document.querySelector("#anzahlBadewannen");
+anzahlBadewannen.innerHTML = anzahlBadewannenWert.toFixed(2);
+
+// Daypicker
+flatpickr("#dateRange", {
+  mode: "range",
+  dateFormat: "Y-m-d",
+  locale: "de",
+  onChange: function (selectedDates, dateStr) {
+    if (selectedDates.length === 2) {
+      const [start, end] = selectedDates;
+
+      // Daten filtern
+      const filteredData = allData.filter((item) => {
+        const itemDate = new Date(item.date);
+        return itemDate >= start && itemDate <= end;
+      });
+
+      // Chart aktualisieren
+      updateChartWithData(filteredData);
+    }
+  },
+});
 // --- Daten nach Datum gruppieren und Durchschnitt berechnen ---
 let dailyData = {};
 
