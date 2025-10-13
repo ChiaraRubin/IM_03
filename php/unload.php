@@ -13,14 +13,29 @@
   10) Keine HTML-Ausgabe; keine var_dump in Prod.
    ============================================================================ */
 
-
 require_once 'config.php'; // Stellen Sie sicher, dass dies auf Ihre tatsächliche Konfigurationsdatei verweist
 header('Content-Type: application/json;charset=utf-8');
 $sqls = ["",""];
 
 try { // dsn = Wohin musst du und wie heisst die Datenbank?
    $pdo = new PDO($dsn, $username, $password, $options);
-   $sql = "SELECT * FROM `Aare_Daten`";
+   if(isset($_GET["start"])) {
+      $startdatum = $_GET["start"];
+   }else{
+      $startdatum = false;
+   };
+    if(isset($_GET["ende"])) {
+      $enddatum = $_GET["ende"];
+   }else{
+      $enddatum = false;
+   };
+
+   if ($enddatum && $startdatum ) {
+      $sql = "SELECT * FROM `Aare_Daten` WHERE Zeit between '$startdatum' AND '$enddatum'";
+   } else {
+       $sql = "SELECT * FROM `Aare_Daten`";
+   };
+    
    // Heutiges Datum Test $sql = "SELECT * FROM `Aare Daten` WHERE DATE(`Zeit`) = '2025-10-07'";
 
    $stmt = $pdo->prepare($sql);
@@ -32,5 +47,3 @@ try { // dsn = Wohin musst du und wie heisst die Datenbank?
 } catch (PDOException $e) {
    echo json_encode (['error' => $e->getMessage()]);
 }
-
-
