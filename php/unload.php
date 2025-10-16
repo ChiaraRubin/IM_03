@@ -1,49 +1,43 @@
 <?php
-/* ============================================================================
-   HANDLUNGSANWEISUNG (unload.php)
-   1) Setze Header: Content-Type: application/json; charset=utf-8.
-   2) Binde 001_config.php (PDO-Config) ein.
-   3) Lies optionale Request-Parameter (z. B. location, limit, from/to) und validiere.
-   4) Baue SELECT mit PREPARED STATEMENT (WHERE/ORDER BY/LIMIT je nach Parametern).
-   5) Binde Parameter sicher (execute([...]) oder bindValue()).
-   6) Hole Datensätze (fetchAll) – optional gruppieren/umformen fürs Frontend.
-   7) Antworte IMMER als JSON (json_encode) – auch bei leeren Treffern ([]) .
-   8) Setze sinnvolle HTTP-Statuscodes (400 für Bad Request, 404 bei 0 Treffern (Detail), 200 ok).
-   9) Fehlerfall: 500 + { "error": "..." } (keine internen Details leaken).
-  10) Keine HTML-Ausgabe; keine var_dump in Prod.
-   ============================================================================ */
-
-require_once 'config.php'; // Stellen Sie sicher, dass dies auf Ihre tatsächliche Konfigurationsdatei verweist
+require_once 'config.php';
 header('Content-Type: application/json;charset=utf-8');
-$sqls = ["",""];
 
-try { // dsn = Wohin musst du und wie heisst die Datenbank?
+try {
    $pdo = new PDO($dsn, $username, $password, $options);
-   if(isset($_GET["start"])) {
-      $startdatum = $_GET["start"];
-   }else{
-      $startdatum = false;
-   };
-    if(isset($_GET["ende"])) {
-      $enddatum = $_GET["ende"];
-   }else{
-      $enddatum = false;
-   };
+   
+   // Parameter auslesen
+   $startdatum = isset($_GET["start"]) ? $_GET["start"] : false;
+   $enddatum = isset($_GET["ende"]) ? $_GET["ende"] : false;
 
-   if ($enddatum && $startdatum ) {
-      $sql = "SELECT * FROM `Aare_Daten` WHERE Zeit between '$startdatum' AND '$enddatum'";
+   // SQL-Query vorbereiten
+   if ($enddatum && $startdatum) {
+      $sql = "SELECT * FROM `Aare_Daten` 
+              WHERE DATE(Zeit) >= :startdatum 
+              AND DATE(Zeit) <= :enddatum
+              ORDER BY Zeit";
+      
+      $stmt = $pdo->prepare($sql);
+      $stmt->execute([
+         ':startdatum' => $startdatum,
+         ':enddatum' => $enddatum
+      ]);
    } else {
-       $sql = "SELECT * FROM `Aare_Daten`";
-   };
-    
-   // Heutiges Datum Test $sql = "SELECT * FROM `Aare Daten` WHERE DATE(`Zeit`) = '2025-10-07'";
+      $sql = "SELECT * FROM `Aare_Daten` ORDER BY Zeit";
+      $stmt = $pdo->prepare($sql);
+      $stmt->execute();
+   }
 
-   $stmt = $pdo->prepare($sql);
-   $stmt-> execute();
+   $data = $stmt->fetchAll();
 
-   $data = $stmt -> fetchAll();
-
-   echo json_encode($data); 
+   if (empty($data)) {
+      http_response_code(404);
+      echo json_encode(['message' => 'Keine Daten gefunden']);
+   } else {
+      http_response_code(200);
+      echo json_encode($data);
+   }
+   
 } catch (PDOException $e) {
-   echo json_encode (['error' => $e->getMessage()]);
+   http_response_code(500);
+   echo json_encode(['error' => 'Datenbankfehler aufgetreten']);
 }

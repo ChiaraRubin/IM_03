@@ -197,8 +197,9 @@ body {
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  margin: 0 auto;
   width: 90%;
+  max-width: 80vw;
+  margin: 0 auto;
 }
 
 @keyframes wiggle {
@@ -250,6 +251,20 @@ body {
 #fischText {
   text-align: left;
   font-size: 1.4em;
+}
+
+#luftUndWasserChart h1,
+#wasserMenge h1 {
+  margin-bottom: 3%;
+}
+
+#areaChart,
+#balken {
+  margin: 3% auto 0;
+  display: block;
+  width: 100%;
+  height: 40vh;
+  min-height: 20rem;
 }
 
 @media only screen and (max-width: 1800px) {
@@ -392,6 +407,18 @@ body {
     align-items: center;
     justify-content: center;
     gap: 2rem;
+  }
+
+  #areaChart,
+  #balken {
+    height: 50vw;
+    min-height: 15rem;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  #wasserMenge {
+    margin: 20% auto;
   }
 }
 
