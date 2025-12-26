@@ -40,7 +40,7 @@ async function loadData(start = "", ende = "", diagram = "") {
   try {
     // Eine Anfrage wird an das PHP Skript gesendet, das die Daten aus der Datenbank zurückliefert
     const response = await fetch(
-      `https://r58eq3buzuj.preview.infomaniak.website/php/unload.php?start=${start}&ende=${ende}`
+      `https://projektim03.chiara-rubin.ch/php/unload.php?start=${start}&ende=${ende}`
     );
     // Die Antwort vom Server wird in das passende Array geschrieben (die Serveranfrage ist für beide Diagramme(Charts) gleich, der Parameter "diagram" entscheidet aber, wohin die Daten gespeichert werden)
     if (diagram === "temp") {
@@ -66,18 +66,21 @@ loadData("", "", "amount");
 function gruppiereNachDatum(allData) {
   // Ein leeres Objekt = {} wird für die gruppierten Daten erstellt
   let dailyData = {};
-
+  // Für jeden Datensatz in den geladenen Daten wird der Zeitstring in ein Datum umgewandelt
   allData.forEach(function (datensatz) {
     let zeitString = datensatz.Zeit.replace(" ", "T");
     let datumObjekt = new Date(zeitString);
 
+    // Tag wird genommen und formatiert
     let tag = datumObjekt.getDate();
     if (tag < 10) {
+      // Einstellige Zahlen (1-9) erhalten vorne noch ein 0
       tag = "0" + tag;
     } else {
       tag = String(tag);
     }
 
+    // Monat wird genommen und formatiert => bei Monat +1, weil Monate bei 0 anfangen
     let monat = datumObjekt.getMonth() + 1;
     if (monat < 10) {
       monat = "0" + monat;
@@ -85,9 +88,12 @@ function gruppiereNachDatum(allData) {
       monat = String(monat);
     }
 
+    // Jahr wird genommen und formatiert
     let jahr = String(datumObjekt.getFullYear());
+    // Das Datum wird im Format "TT.MM.JJJJ" erstellt
     let datum = tag + "." + monat + "." + jahr;
 
+    // Falls für das Datum noch keine Einträge existieren, sollten leere Arrays erstellt werden für die drei Werte (lufttemperatur, wassertemperatur und wassermenge)
     if (dailyData[datum] === undefined) {
       dailyData[datum] = {
         lufttemperatur: [],
@@ -96,6 +102,7 @@ function gruppiereNachDatum(allData) {
       };
     }
 
+    // Werte werden zu dem Datum hinzugefügt
     dailyData[datum].lufttemperatur.push(parseFloat(datensatz.Lufttemperatur));
     dailyData[datum].wassertemperatur.push(
       parseFloat(datensatz.Wassertemperatur)
@@ -106,13 +113,17 @@ function gruppiereNachDatum(allData) {
   return dailyData;
 }
 
-// Funktion, um Durchschnittswerte zu berechnen
+// Funktion, um die Durchschnittswerte pro Tag zu berechnen
 function berechneDurchschnittswerte(dailyData) {
+  // leere Arrays werden für die Ergebnisse erstellt
   let zeit = [];
   let lufttemperatur = [];
   let wassertemperatur = [];
   let wassermenge = [];
 
+  // Für jedes Datum in den gruppierten Daten, wird das Datum zur Liste hinzugefügt.
+  //  Danach wird der Durchschnitt für die Lufttemperatur, Wassertemperatur und Wassermenge berechnet.
+  // Anschliessend werden die Durchschnitte auf zwei Kommastellen mit "toFixed(2)" gerundet und zur Liste hinzufegügt
   for (let datum in dailyData) {
     zeit.push(datum);
 
@@ -128,33 +139,39 @@ function berechneDurchschnittswerte(dailyData) {
     wassertemperatur.push(durchschnittWasser.toFixed(2));
     wassermenge.push(durchschnittMenge.toFixed(2));
   }
-
+  // alle berechneten Werte werden zurückgegeben
   return { zeit, lufttemperatur, wassertemperatur, wassermenge };
 }
 
 // Funktion, um Charts zu erstellen oder zu aktualisieren
 function aktualisiereCharts(durchschnittswerte, diagram) {
+  // Die Durchschnittswerte werden in einzelne Variablen (zeit, lufttemperatur, wassertemperatur, wassermenge) aufgeteilt
   let { zeit, lufttemperatur, wassertemperatur, wassermenge } =
     durchschnittswerte;
 
+  // Je nachdem, welcher Diagramm-Typ gewählt wurde, wird das entsprechende Chart erstellt oder aktualisiert
   if (diagram === "temp") {
     // Area Chart (Luft- und Wassertemperatur)
+    // Element mit der ID "areaChart" wird aus dem HTML geholt
     let areaChartCanvas = document.querySelector("#areaChart");
-
+    // Hier wird überprüft, ob das Chart bereits existiert
     if (areaChart) {
       // Chart existiert bereits -> nur Daten aktualisieren
       areaChart.data.labels = zeit;
       areaChart.data.datasets[0].data = wassertemperatur;
       areaChart.data.datasets[1].data = lufttemperatur;
+      // Das Chart wird mit den neuen Daten upgedated
       areaChart.update();
     } else {
+      // Das Chart wird erstmalig erstellt
       // Bildschirmbreite prüfen
       let istKleinerBildschirm = window.innerWidth < 500;
 
-      // Chart erstmalig erstellen
+      // Daten-Objekt für das Area Chart wird definiert
       const areaData = {
-        labels: zeit,
+        labels: zeit, // X-Achse = Datum
         datasets: [
+          // Dataset für die Wassertemperatur mit Einstellungen zu den Grafiken (Linien- und Füllfarbe, Glättung der Linie)
           {
             label: "Wassertemperatur",
             data: wassertemperatur,
@@ -163,6 +180,7 @@ function aktualisiereCharts(durchschnittswerte, diagram) {
             fill: true,
             tension: 0.3,
           },
+          // Dataset für die Lufttemperatur mit visuellen Einstellungen
           {
             label: "Lufttemperatur",
             data: lufttemperatur,
@@ -173,7 +191,7 @@ function aktualisiereCharts(durchschnittswerte, diagram) {
           },
         ],
       };
-
+      // Konfigurations-Objekt für das Area Chart mit allen Darstellungs- und Verhaltenseinstellungen
       const areaConfig = {
         type: "line",
         data: areaData,
@@ -205,28 +223,31 @@ function aktualisiereCharts(durchschnittswerte, diagram) {
           },
         },
       };
-
+      // Chart wird erstellt und in der globalen Variable gespeichert
       areaChart = new Chart(areaChartCanvas, areaConfig);
 
-      // Höhe nur auf kleinen Bildschirmen setzen
+      // Höhe wird auf kleinen Bildschirmen manuell gesetzt (400px hoch)
       if (istKleinerBildschirm) {
         areaChart.canvas.parentNode.style.height = "400px";
       }
     }
   } else {
     // Balken Chart (Wassermenge)
+    // Variable "balken" wird defininert, wobei das Canvas-Element für das Wassermengen-Diagramm aus dem HTML geholt wird
     let balken = document.querySelector("#balken");
 
+    // Überprüfung, ob das Chart bereits existiert
     if (balkenChart) {
       // Chart existiert bereits -> nur Daten aktualisieren
       balkenChart.data.labels = zeit;
       balkenChart.data.datasets[0].data = wassermenge;
       balkenChart.update();
     } else {
-      // Bildschirmbreite prüfen
+      // Chart wird erstmalig erstellt
+      // Bildschirmbreite wird geprüft
       let istKleinerBildschirm = window.innerWidth < 500;
 
-      // Chart erstmalig erstellen
+      // Daten-Objekt für das Balkendiagramm
       const data = {
         labels: zeit,
         datasets: [
@@ -237,7 +258,7 @@ function aktualisiereCharts(durchschnittswerte, diagram) {
           },
         ],
       };
-
+      // Konfigurations-Objekt für das Balkendiagramm
       const config = {
         type: "bar",
         data: data,
@@ -268,7 +289,7 @@ function aktualisiereCharts(durchschnittswerte, diagram) {
           },
         },
       };
-
+      // Chart wird erstellt und in der globalen Variable gespeichert
       balkenChart = new Chart(balken, config);
 
       // Höhe nur auf kleinen Bildschirmen setzen
@@ -278,10 +299,11 @@ function aktualisiereCharts(durchschnittswerte, diagram) {
     }
   }
 }
-
+// Funktion zeigt die geladenen Daten an
 function showData(diagram) {
+  // Je nach Diagramm-Typ werden die entsprechenden Daten ausgewählt
   const allData = diagram === "temp" ? tempData : amountData;
-  // aktuellen Werte beim ersten Laden speichern
+  // aktuelle Werte beim ersten Laden speichern
   if (echteAktuelleWerte === null) {
     echteAktuelleWerte = {
       wassertemperatur: allData[allData.length - 1].Wassertemperatur,
@@ -290,36 +312,42 @@ function showData(diagram) {
     };
   }
 
-  // Aktuelle Wassertemperatur
+  // Aktuelle Wassertemperatur wird aus den gespeicherten Werten geholt und im HTML angezeigt
   let aktuelleWassertemperatur = echteAktuelleWerte.wassertemperatur;
   let aktuelleWassertemperaturWert = document.querySelector(
     "#aktuelleWassertemperatur"
   );
   aktuelleWassertemperaturWert.innerHTML = aktuelleWassertemperatur + " °C";
-  // Aktuelle Wassermenge
+
+  // Aktuelle Wassermenge wird aus den gespeicherten Werten geholt und im HTML angezeigt
   let aktuelleWassermenge = echteAktuelleWerte.wassermenge;
   let aktuelleWasserMengeWert = document.querySelector("#aktuelleWasserMenge");
   aktuelleWasserMengeWert.innerHTML = `${aktuelleWassermenge} m³/s`;
-  // Aktuelle Lufttemperatur
+
+  // Aktuelle Lufttemperatur wird aus den gespeicherten Werten geholt und im HTML angezeigt
   let aktuelleLufttemperatur = echteAktuelleWerte.lufttemperatur;
   let aktuelleLufttemperaturWert = document.querySelector(
     "#aktuelleLufttemperatur"
   );
   aktuelleLufttemperaturWert.innerHTML = aktuelleLufttemperatur + " °C";
 
+  // Alle Schwimmsäcke werden zuerst unsichtbar gemacht mit dem Hinzufügen der Klasse "unsichtbar"
   schwimmsack01.classList.add("unsichtbar");
   schwimmsack02.classList.add("unsichtbar");
   schwimmsack03.classList.add("unsichtbar");
   schwimmsack04.classList.add("unsichtbar");
   schwimmsack05.classList.add("unsichtbar");
-  // Fische und Schwimmsäcke anzeigen
+
+  // Abhängig von der Wassertemperatur wird der passende Fisch und Text angezeigt. Gleichzeitig wird eine gewisse ANzahl Schwimmsäcke sichtbar gemacht (viele Schwimmsäcke bei warmen Wassertemperaturen und wenig Schwimmsäcke bei kalten Wassertemperaturen)
+  // Sehr kaltes Wasser (<= 4°C): Handschuhe werden angezeigt-> es ist zu kalt zum Fischen + keine Schwimmsäcke sind sichtbar
   if (aktuelleWassertemperatur <= 4) {
     aktuellerFisch.src = "src/Handschuhe.png";
     aktuellerFisch.alt = "Handschuhe";
     aktuellerFischText.innerHTML =
       "Brr, es isch z'chalt zum go Fische gah! Aber vielicht isch en Spaziergang ade Aare entlang ganz schön!";
     aktuellerFischTitel.innerHTML = "Ned z'vergesse!";
-    // keine Schwimmsäcke sichtbar
+
+    // Kaltes Wasser(4 bis 8 °C): Hecht wird angezeigt + 1 Schwimmsack (Klasse "unsichtbar" wird entfernt)
   } else if (aktuelleWassertemperatur > 4 && aktuelleWassertemperatur < 8) {
     aktuellerFisch.src = "src/Hecht.png";
     aktuellerFisch.alt = "Hecht";
@@ -327,6 +355,8 @@ function showData(diagram) {
       "Dr Hecht isch ä Roubfisch us dr Familiä vo dä Hechtartigä. Är läbt vor auem i See, Teichä und langsam fliessendä Flüss mit viu Wasserpflanzä. Charakteristisch isch sini länglächi Körperform, dr spitzig Chopf und sini scharfä Zähn. D'Färbig isch grüänläch mit häuä Fläckä, wo ihm ä gueti Tarnig gägä Wasserpflanzä git. Dr Hecht isch e sehr gfrässigä Röiber und frisst Fischä, Frösch und Wasserinsektä. Us Spitzäröiber spiut är ä wichtigi Rouä für z'Glichgwicht im Gwässer.";
     aktuellerFischTitel.innerHTML = "Dr Hecht";
     schwimmsack01.classList.remove("unsichtbar");
+
+    // Kühles Wasser (8 bis 14°C): Bachforelle wird angezeigt + 2 Schwimmsäcke
   } else if (aktuelleWassertemperatur >= 8 && aktuelleWassertemperatur < 14) {
     aktuellerFisch.src = "src/Bachforelle.png";
     aktuellerFisch.alt = "Bachforelle";
@@ -335,6 +365,8 @@ function showData(diagram) {
     aktuellerFischTitel.innerHTML = "D'Bachforelle";
     schwimmsack01.classList.remove("unsichtbar");
     schwimmsack04.classList.remove("unsichtbar");
+
+    // Medium warmes Wasser (14 bis 16°C): Äsche + 3 Schwimmsäcke werden angezeigt
   } else if (aktuelleWassertemperatur >= 14 && aktuelleWassertemperatur < 16) {
     aktuellerFisch.src = "src/Aesche.png";
     aktuellerFisch.alt = "Aesche";
@@ -344,6 +376,8 @@ function showData(diagram) {
     schwimmsack02.classList.remove("unsichtbar");
     schwimmsack04.classList.remove("unsichtbar");
     schwimmsack05.classList.remove("unsichtbar");
+
+    // Warmes Wasser (über 16°C): Egli + alle Schwimmsäcke (5) werden angezeigt
   } else {
     aktuellerFisch.src = "src/Egli.png";
     aktuellerFisch.alt = "Egli";
@@ -357,14 +391,17 @@ function showData(diagram) {
     schwimmsack05.classList.remove("unsichtbar");
   }
 
-  // Badewannen berechnen
+  // berechnen, wie viele Badewannen die aktuelle Wassermenge entspricht
+  // 1 m3/s = 1000 Liter/ Sekunde und in einer Badewanne haben ca. 150 Liter Platz
   let anzahlBadewannenWert = (aktuelleWassermenge * 1000) / 150;
   let anzahlBadewannen = document.querySelector("#anzahlBadewannen");
+  // Ergebnis auf zwei Kommastellen runden
   anzahlBadewannen.innerHTML = anzahlBadewannenWert.toFixed(2);
 
-  // Daten verarbeiten und Charts aktualisieren
+  // Daten nach Datum gruppieren und Durchschnittswerte berechnen
   let dailyData = gruppiereNachDatum(allData);
   let durchschnittswerte = berechneDurchschnittswerte(dailyData);
+  // Charts werden aktualisiert mit den berechneten Durchschnittswerten
   aktualisiereCharts(durchschnittswerte, diagram);
 }
 
@@ -376,70 +413,86 @@ function formatiereLokalDatum(datum) {
   return `${jahr}-${monat}-${tag}`;
 }
 
-// Daypicker 01
+// Kalender mit Datumsauswahl (Datepicker) für das erste Diagramm (Wasser- und Lufttemperatur)
 flatpickr("#dateRange01", {
   mode: "range",
   dateFormat: "Y-m-d",
   locale: "de",
+  // Funktion wird aufgerufen, wenn ein Datum auswählt wurde
   onChange: function (selectedDates, dateStr) {
+    // es wird überprüft, ob beide Daten (Start und Ende) ausgewählt wurden
     if (selectedDates.length === 2) {
+      // Daten werden in passendes Format umgewandelt
       let startString = formatiereLokalDatum(selectedDates[0]);
       let endString = formatiereLokalDatum(selectedDates[1]);
 
       console.log("Start:", startString);
       console.log("Ende:", endString);
 
+      // Temperaturdaten werden geladen für den ausgewählten Zeitraum
       loadData(startString, endString, "temp");
     }
   },
 });
 
-// Daypicker 02
+// Kalender mit Datumsauswahl (Datepicker) für das zweite Diagramm (Wassermenge)
 flatpickr("#dateRange02", {
   mode: "range",
   dateFormat: "Y-m-d",
   locale: "de",
+  // Funktion wird aufgerufen, wenn ein Datum auswählt wurde
   onChange: function (selectedDates, dateStr) {
     if (selectedDates.length === 2) {
+      // Daten werden in passendes Format umgewandelt
       let startString = formatiereLokalDatum(selectedDates[0]);
       let endString = formatiereLokalDatum(selectedDates[1]);
 
       console.log("Start:", startString);
       console.log("Ende:", endString);
 
+      // Daten zu den Wassermengen werden geladen für den ausgewählten Zeitraum
       loadData(startString, endString, "amount");
     }
   },
 });
 
-// Resize EventListener - Charts bei Fenstergrößenänderung aktualisieren
+// Ein Eventlistener wird hinzugefügt, wenn das Browser-Fenster vergrössert oder verkleinert wird
 window.addEventListener("resize", () => {
-  // Prüfen ob Charts existieren, bevor wir sie updaten
+  // überprüfen, ob das Area-Chart existiert, bevor es aktualisiert wird
   if (areaChart) {
     let istKleinerBildschirm = window.innerWidth < 500;
+    // Das Seitenverhältnis wird entsprechend der Bildschirmgrösse angepasst
     areaChart.options.maintainAspectRatio = istKleinerBildschirm ? false : true;
 
+    // Auf kleinen Bildschirmen wird eine feste Höhe gesetzt
     if (istKleinerBildschirm) {
       areaChart.canvas.parentNode.style.height = "400px";
     } else {
+      // Auf grösseren Bildschirm wird die Höhe zurückgesetzt
       areaChart.canvas.parentNode.style.height = "";
     }
 
+    // Chart wird neu gezeichnet, um die Grössenänderung zu übernehmen
     areaChart.resize();
   }
 
+  // überprüfen, ob das Balken Chart existiert, bevor es aktualisiert wird
   if (balkenChart) {
     let istKleinerBildschirm = window.innerWidth < 500;
+    // Das Seitenverhältnis wird entsprechend der Bildschirmgrösse angepasst
     balkenChart.options.maintainAspectRatio = istKleinerBildschirm
       ? false
       : true;
 
+    // Auf kleinen Bildschirmen wird eine feste Höhe gesetzt
     if (istKleinerBildschirm) {
       balkenChart.canvas.parentNode.style.height = "400px";
     } else {
+      // Auf grösseren Bildschirm wird die Höhe zurückgesetzt
       balkenChart.canvas.parentNode.style.height = "";
     }
 
+    // Chart wird neu gezeichnet
     balkenChart.resize();
   }
 });

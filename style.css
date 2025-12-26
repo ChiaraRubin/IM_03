@@ -4,6 +4,7 @@
   box-sizing: border-box;
 }
 
+/* CSS-Variablen für Farben definieren */
 :root {
   --beige: #f5f1e5;
   --rot: #c02a2a;
@@ -14,17 +15,20 @@ body {
   background-color: var(--beige);
 }
 
+/* Container für die Startseite */
 #startseite {
   position: relative;
   height: 100vh;
 }
 
+/* Hintergrundbild geht über die gesamte Höhe des Bildschirms */
 #sprung {
   width: 100%;
   height: 100vh;
   object-fit: cover;
 }
 
+/* Titel und Untertitel liegen über dem Hintergrundbild */
 #titel {
   position: absolute;
   top: 15%;
@@ -45,6 +49,8 @@ body {
   font-size: 2vw;
 }
 
+/* Schwimmsäcke */
+/* Fünf Schwimmsäcke werden über das Startbild verteilt und je nach Wassertemperatur ein- oder ausgeblendet (siehe JavaScript File) */
 #schwimmsack01 {
   position: absolute;
   top: 48%;
@@ -85,10 +91,14 @@ body {
   width: 13vw;
 }
 
+/* Klasse zum Ausblenden der Schwimmsäcke (wird über das JavaScript hinzugefügt, bzw. entfernt) */
 .unsichtbar {
   display: none;
 }
 
+/* aktuelle Werte */
+
+/* Rote Kreise für die Anzeige der aktuellen Werte (Wassertemperatur, Lufttemperatur, Wassermenge) */
 .kreis {
   width: 21vw;
   aspect-ratio: 1 / 1;
@@ -103,6 +113,7 @@ body {
   font-weight: 600;
 }
 
+/* Container für die aktuellen Werte (zentriert) */
 .aktuelleWerte {
   display: flex;
   flex-direction: column;
@@ -122,6 +133,7 @@ body {
   font-size: 2.3vw;
 }
 
+/* Die drei Kreise mit aktuellen Werten werden horizontal nebeneinander angezeigt */
 #aktuelleDaten {
   display: flex;
   gap: 3%;
@@ -129,6 +141,7 @@ body {
   justify-content: space-around;
 }
 
+/* Roter Bereich, der die Wassermenge in Badewannen umrechnet */
 #wassermengeUmwandlung {
   background: var(--rot);
   display: block;
@@ -146,6 +159,7 @@ body {
   width: 50%;
 }
 
+/* Container für den Fisch-Bereich, und die Charts */
 #fisch,
 #luftUndWasserChart,
 #wasserMenge {
@@ -159,6 +173,7 @@ body {
   position: relative;
 }
 
+/* Überschriften */
 #fisch h1,
 #luftUndWasserChart h1,
 #wasserMenge h1 {
@@ -170,6 +185,7 @@ body {
   font-size: 2.3vw;
 }
 
+/* Roter Kreis hinter dem Fisch */
 #kreisFisch {
   position: absolute;
   top: 50%;
@@ -180,6 +196,7 @@ body {
   z-index: 1;
 }
 
+/* Fischbild mit Wackel-Animation (Fischbild wird im JS Dokument je nach Wassertemperatur geändert) */
 #fischAktuell {
   position: absolute;
   top: 50%;
@@ -191,6 +208,7 @@ body {
   transform-origin: center center;
 }
 
+/* Container für Charts (Wassermenge und Luft- und Wassertemperatur) */
 #wasserMenge,
 #luftUndWasserChart {
   display: flex;
@@ -202,6 +220,7 @@ body {
   margin: 0 auto;
 }
 
+/* Wackel-Animation für den Fisch */
 @keyframes wiggle {
   0%,
   100% {
@@ -215,6 +234,7 @@ body {
   }
 }
 
+/* Container für das Fischbild mit senkrechtem Strich und Fischnamen */
 #fischBild {
   display: block;
   align-items: center;
@@ -223,11 +243,13 @@ body {
   text-align: center;
 }
 
+/* Fischname unter dem Bild (der entsprechende Name wird über das JavaScript eingefügt) */
 #fischBild p {
   font-size: 1.2em;
   margin-top: 20%;
 }
 
+/* Vertikaler Strich unter dem Fisch */
 #fischBild::after {
   content: "";
   position: absolute;
@@ -241,6 +263,7 @@ body {
   margin-top: 50%;
 }
 
+/* Nebeneinander-Anordnung des Fischbild (links) und Beschreibungstext (rechts) */
 .fischbox {
   display: flex;
   gap: 15%;
@@ -248,16 +271,19 @@ body {
   padding: 5%;
 }
 
+/* Beschreibungstext zum Fisch (der entsprechende Text wird über das JavaScript eingefügt) */
 #fischText {
   text-align: left;
   font-size: 1.4em;
 }
 
+/* Abstand zwischen der Überschrift und den Charts (Diagramme) */
 #luftUndWasserChart h1,
 #wasserMenge h1 {
   margin-bottom: 3%;
 }
 
+/* Canvas-Elemente für die beiden Charts (Wasser- und Lufttemperatur und Wassermenge) */
 #areaChart,
 #balken {
   margin: 3% auto 0;
@@ -267,12 +293,15 @@ body {
   min-height: 20rem;
 }
 
+/* Responsive Design, damit der Seiteninhalt auf verschiedenen Screengrössen ansprechend angezeigt wird */
+/* Anpassungen für Screens unter 1800px */
 @media only screen and (max-width: 1800px) {
   #sprung {
     height: 100%;
   }
 }
 
+/* Anpassungen für Screens unter 1450px Breite */
 @media only screen and (max-width: 1450px) {
   #fischBild p {
     margin-top: 25%;
@@ -284,6 +313,7 @@ body {
   }
 }
 
+/* Anpassungen für Screens unter 1100px Breite */
 @media only screen and (max-width: 1100px) {
   #fischBild p,
   #fischText {
@@ -299,12 +329,14 @@ body {
   }
 }
 
+/* Anpassungen für Screens unter 1065px Breite */
 @media only screen and (max-width: 1065px) {
   #fischBild::after {
     height: 1.8rem;
   }
 }
 
+/* Anpassungen für Screens unter 910px Breite */
 @media only screen and (max-width: 910px) {
   #startseite {
     height: 100%;
@@ -323,6 +355,7 @@ body {
   }
 }
 
+/* Anpassungen für Screens unter 710px Breite*/
 @media only screen and (max-width: 710px) {
   #fischBild p,
   #fischText {
@@ -336,18 +369,21 @@ body {
   }
 }
 
+/* Anpassungen für Screens unter 650px Breite */
 @media only screen and (max-width: 650px) {
   #fischBild::after {
     height: 1.3rem;
   }
 }
 
+/* Anpassungen für Screens unter 560px Breite */
 @media only screen and (max-width: 560px) {
   #untertitel,
   #fisch h3 {
     font-size: 3.1vw;
   }
 
+  /* Schwimmsäcke für kleinere Screens neu positionieren */
   #schwimmsack03 {
     top: 45%;
     left: 45%;
@@ -362,6 +398,7 @@ body {
     font-size: 3.2vw;
   }
 
+  /* Fischbox wird von horizontal auf vertikal umgestellt */
   .fischbox {
     display: block;
   }
@@ -379,6 +416,7 @@ body {
     }
   }
 
+  /* Fischbild vertikal zentrieren */
   #fischBild {
     display: flex;
     flex-direction: column;
@@ -401,6 +439,7 @@ body {
     top: 0%;
   }
 
+  /* Aktuelle Werte (rote Kreise) vertikal statt horizontal stapeln */
   #aktuelleDaten {
     display: flex;
     flex-direction: column;
@@ -416,12 +455,14 @@ body {
   }
 }
 
+/* Anpassungen für Screens unter 500px Breite */
 @media only screen and (max-width: 500px) {
   #wasserMenge {
     margin: 20% auto;
   }
 }
 
+/* Anpassungen für Screens unter 420px Breite */
 @media only screen and (max-width: 420px) {
   #fisch {
     margin: 5% 0%;

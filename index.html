@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Stylesheets und Schriftarten -->
     <link rel="stylesheet" href="style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -10,11 +11,13 @@
       href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
       rel="stylesheet"
     />
+    <!-- Chart.js Bibliothek für Diagramme -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>Aare you safe?</title>
   </head>
   <body>
     <main>
+      <!-- Hero-Bereich mit Titel und Schwimmsäcken -->
       <div id="startseite">
         <img
           src="src/sprungBild.png"
@@ -23,6 +26,8 @@
         />
         <h1 id="titel">AARE YOU SAFE?</h1>
         <h3 id="untertitel">Schwümmä und Fischä in Bärn</h3>
+
+        <!-- Schwimmsäcke, die je nach Wassertemperatur ein- oder ausgeblendet werden -->
         <img
           src="src/schwimmboje.png"
           alt="Schwimmsack in Rot"
@@ -52,6 +57,8 @@
           id="schwimmsack05"
         />
       </div>
+
+      <!-- Aktuelle Werte: Wassertemperatur, Wassermenge und Lufttemperatur -->
       <section id="aktuelleDaten">
         <div class="aktuelleWerte">
           <div class="kreis" id="aktuelleWassertemperatur"></div>
@@ -66,11 +73,15 @@
           <h3>Aktuelli <br />Lufttemperatur</h3>
         </div>
       </section>
+
+      <!-- Wassermenge umgerechnet in Badewannen pro Sekunde -->
       <section id="wassermengeUmwandlung">
         <img src="src/Badewanne.png" alt="Badewanne" id="badewanne" />
         <h1 id="anzahlBadewannen">1000</h1>
         <h3>So viu Badwannä fliessä i eirä Sekundä dürä</h3>
       </section>
+
+      <!-- Zeigt Fisch je nach Wassertemperatur -->
       <section id="fisch">
         <h1>Fisch vom Tag</h1>
         <h3>Welä Fisch chönntsch hüt fischä?</h3>
@@ -84,6 +95,8 @@
             />
             <p id="aktuellerFisch"></p>
           </div>
+
+          <!-- Beschreibungstext wird je nach angezeigtem Fisch geändert (siehe JavaScript) -->
           <p id="fischText">
             D’Bachforelle isch en Süesswasserfisch us de Familie vo de Lachs.
             Sie lebt bevorzugt i klare, chüele und surstoffriche Bäch und Flüss
@@ -95,39 +108,55 @@
           </p>
         </div>
       </section>
+
+      <!-- Diagramm: Luft- und Wassertemperatur -->
       <section id="luftUndWasserChart">
         <h1>Luft- und Wassertemperatur</h1>
+
+        <!-- Flatpickr Bibliothek für die Datumsauswahl -->
         <link
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css"
         />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
 
+        <!-- Eingabefeld für die Zeitraumauswahl -->
         <input
           type="text"
           id="dateRange01"
           placeholder="Zytrum wählä"
           style="text-align: center"
         />
+
+        <!-- Canvas-Element für das Chart.js Diagramm -->
         <canvas id="areaChart"></canvas>
       </section>
+
+      <!-- Diagramm: Wassermenge -->
       <section id="wasserMenge">
         <h1>Wassermängi</h1>
+
+        <!-- Flatpickr für die Datumsauswahl -->
         <link
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css"
         />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
 
+        <!-- Eingabefeld für die Zeitraumauswahl -->
         <input
           type="text"
           id="dateRange02"
           placeholder="Zytrum wählä"
           style="text-align: center"
         />
+
+        <!-- Canvas-Element für das Chart.js Balkendiagramm -->
         <canvas id="balken"></canvas>
       </section>
     </main>
+
+    <!-- JavaScript-File einbinden -->
     <script src="script.js" type="module"></script>
   </body>
 </html>
