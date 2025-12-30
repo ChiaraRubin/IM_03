@@ -1,4 +1,4 @@
-# Projektbeschreibung
+## Projektbeschreibung
 
 Aare you Safe? visualisiert aktuelle Umweltdaten der Aare in Bern. Grundlage dafür sind Wasser- und Lufttemperatur sowie die aktuelle Wassermenge. Aufgrund dessen kann eingeschätzt werden, wie sicher das Schwimmen in der Aare ist.
 
