@@ -20,8 +20,8 @@ try {
 
    // Führt das Statement aus und bindet die Werte an die Platzhalter
     $stmt->execute([
-    ':Lufttemperatur'   => $transformedData['temperature'],  // Lufttemperatur
-    ':Wassertemperatur' => $transformedData['tt'],           // Wassertemperatur
+    ':Lufttemperatur'   => $transformedData['tt'],  // Lufttemperatur
+    ':Wassertemperatur' => $transformedData['temperature'],           // Wassertemperatur
     ':Wassermenge'      => $transformedData['flow'],         // Wassermenge
     ':Zeit'             => date('Y-m-d H:i:s')               // aktueller Zeitstempel
     ]);

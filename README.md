@@ -16,6 +16,10 @@ JavaScript-Bibliotheken wie Chart.js erleichtern zwar die Umsetzung von komplexe
 
 Ein weiteres zentrales Learning war der ETL-Prozess. Das Extrahieren von Daten aus der externen API «Aare Guru», deren Aufbereitung und das anschliessende Speichern in unserer eigenen Datenbank war neu für uns. Besonders unterstützt hat uns dabei die visuelle Erklärung im Unterricht sowie das mehrmalige gemeinsame Durchgehen dieses Prozesses.
 
+Am 02.01.2026 ist uns aufgefallen, dass im load.php die Zuordnung von Luft- und Wassertemperatur vertauscht war („tt“ = Lufttemperatur, „temperature“ = Wassertemperatur). Wir hatten fälschlicherweise angenommen, dass „tt“ für die Wassertemperatur steht. Dadurch sind im Areadiagramm die Wasser- und Lufttemperaturdaten vor dem 02.01.2026 vertauscht dargestellt. Ab dem 02.01.2026 werden die Werte korrekt angezeigt, was zwischen dem 01.01.2026 und dem 02.01.2026 zu einem sichtbaren Sprung in den Kurven führt.
+
+Als Learning daraus nehmen wir mit, künftig frühzeitig einen Double-Check der Daten durchzuführen und diese mit anderen bestehenden Webseiten abzugleichen, die dieselbe API verwenden.
+
 ## Schwierigkeiten
 
 - Die Charts mit Chart.js responsiv zu machen erwies sich als schwierig, da die Anpassungen direkt in JavaScript anstatt im CSS Dokument gemacht werden mussten und das neu für uns war.
